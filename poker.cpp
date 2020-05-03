@@ -137,11 +137,11 @@ int check_black_num(string black_num, bool is_black_flush){
     }
 
     sort(count, count + 5);
-    if(count[4] == 2 && count[3] == 2){
+    if(count[1] == 2 && count[3] == 2){
         //two_pairs
         return 2000;
     }
-    else if(count[4] == 2 && count[3] != 2){
+    else if(count[1] != 2 && count[3] == 2){
         //pair
         return 1000;
     }
@@ -232,11 +232,12 @@ int check_white_num(string white_num, bool is_white_flush){
     }
 
     sort(count, count + 5);
-    if(count[4] == 2 && count[3] == 2){
+
+    if(count[1] == 2 && count[3] == 2){
         //two_pairs
         return 2000;
     }
-    else if(count[4] == 2 && count[3] != 2){
+    else if(count[1] != 2 && count[3] == 2){
         //pair
         return 1000;
     }
@@ -279,18 +280,13 @@ void check_tie(string black_num, string white_num, int weight){
     }
     sort(black_int, black_int + 5);
     sort(white_int, white_int + 5);
-
+    
     int black_count[5] = {0,0,0,0,0};
+    int white_count[5] = {0,0,0,0,0};
     for(int i = 0; i < 5; i++){
         for(int j = 0; j < 5; j++){
             if(black_int[i] == black_int[j])
                 black_count[i]++;
-        }
-    }
-
-    int white_count[5] = {0,0,0,0,0};
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
             if(white_int[i] == white_int[j])
                 white_count[i]++;
         }
@@ -314,11 +310,61 @@ void check_tie(string black_num, string white_num, int weight){
         return;
     }
     else if(weight == 2000){
+        int black_pair_max = 0, black_pair_min = 0, white_pair_max = 0, white_pair_min = 0;
+        int black_rest, white_rest;
+
+        for(int i = 0; i < 5; i++){
+            if(black_count[i] == 1)
+                black_rest = black_int[i];
+            if(white_count[i] == 1)
+                white_rest = white_int[i];
+        }
+
         
     }
     else if(weight == 1000){
-        
-    }
+        int black_pair = 0, white_pair = 0, b = 0, w = 0;
+        int black_rest[3] = {0,0,0};
+        int white_rest[3] = {0,0,0};
+        for(int i = 0; i < 5; i++){
+            if(black_count[i] == 2)
+                black_pair = black_int[i];
+            if(white_count[i] == 2)
+                white_pair = white_int[i];
+        }
+
+        for(int i = 0; i < 5; i++){
+            if(black_int[i] != black_pair){
+                black_rest[b] = black_int[i];
+                b++;
+            }
+            if(white_int[i] != white_pair){
+                white_rest[w] = white_int[i];
+                w++;
+            }
+        }
+
+        if(black_pair > white_pair)
+            cout << "Black wins." << endl;
+        else if(white_pair > black_pair)
+            cout << "White wins." << endl;
+        else{
+            sort(black_rest, black_rest + 3);
+            sort(white_rest, white_rest + 3);
+            for(int i = 2; i >= 0; i--){
+                if(black_rest[i] > white_rest[i]){
+                    cout << "Black wins." << endl;
+                    return;
+                }
+                else if(white_rest[i] > black_rest[i]){
+                    cout << "White wins." << endl;
+                    return;
+                }
+            }
+            cout << "Tie." << endl;
+            return;
+        }
+    }   
     else
         ;
 }
