@@ -75,9 +75,82 @@ int check_black_num(string black_num, bool is_black_flush){
     }
     sort(black_int, black_int + 5);
     
+    //str_flush = 8000, foak = 7000, full = 6000, flush = 5000, straight = 4000, toak = 3000, two_pairs = 2000, pair = 1000, highcard = 0;
+    
+    //check straight
+    bool is_straight = true;
 
+    for(int i = 0; i < 4; i++){
+        if(black_int[i+1] != (black_int[i] + 1)){
+            is_straight = false;
+            break;
+        }
+    }
+    //ATJQK
+    if(black_int[0] == 1 && black_int[1] == 10 && black_int[2] == 11 && black_int[3] == 12 && black_int[4] == 13)
+        is_straight = true;
 
-    return 0;
+    int count[5] = {0,0,0,0,0};
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            if(black_int[i] == black_int[j])
+                count[i]++;
+        }
+    }
+
+    //straight flush
+    if(is_straight && is_black_flush){
+        return 8000;
+    }
+    else if(is_black_flush && !is_straight){
+        //flush
+        return 5000;
+    }
+    else if(!is_black_flush && is_straight){
+        //straight
+        return 4000;
+    }
+
+    //foak
+    if(count[2] == 4){
+        if(black_int[2] == 1)
+            black_int[2] = 14;
+
+        int foak_value = 7000 + black_int[2];
+        return foak_value;
+    }
+    else if(count[2] == 3 && (count[0] == 2 || count[4] == 2)){
+        //full house
+        if(black_int[2] == 1)
+            black_int[2] = 14;
+
+        int full_value = 6000 + black_int[2];
+        return full_value;
+    }
+    else if(count[2] == 3 && (count[0] == 1 || count[4] == 1)){
+        //toak
+        if(black_int[2] == 1)
+            black_int[2] = 14;
+
+        int toak_value = 3000 + black_int[2];
+        return toak_value;
+    }
+
+    sort(count, count + 5);
+    if(count[4] == 2 && count[3] == 2){
+        //two_pairs
+        return 2000;
+    }
+    else if(count[4] == 2 && count[3] != 2){
+        //pair
+        return 1000;
+    }
+    else if(count[4] == 1){
+        //highcard
+        return 0;
+    }
+
+    return -1; //if fail to recognize the cards
 }
 int check_white_num(string white_num, bool is_white_flush){
     int white_int[5];
@@ -97,9 +170,86 @@ int check_white_num(string white_num, bool is_white_flush){
     }
     sort(white_int, white_int + 5);
 
+    //strflush = 8000, foak = 7000, full = 6000, flush = 5000, straight = 4000, toak = 3000, tpair = 2000, pair = 1000, highcard = 0;
+    
+    //check straight
+    bool is_straight = true;
 
+    for(int i = 0; i < 4; i++){
+        if(white_int[i+1] != (white_int[i] + 1)){
+            is_straight = false;
+            break;
+        }
+    }
+    //ATJQK
+    if(white_int[0] == 1 && white_int[1] == 10 && white_int[2] == 11 && white_int[3] == 12 && white_int[4] == 13)
+        is_straight = true;
 
-    return 0;
+    int count[5] = {0,0,0,0,0};
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            if(white_int[i] == white_int[j])
+                count[i]++;
+        }
+    }
+
+    //straight flush
+    if(is_straight && is_white_flush){
+        return 8000;
+    }
+    else if(is_white_flush && !is_straight){
+        //flush
+        return 5000;
+    }
+    else if(!is_white_flush && is_straight){
+        //straight
+        return 4000;
+    }
+
+    //foak
+    if(count[2] == 4){
+        if(white_int[2] == 1)
+            white_int[2] = 14;
+
+        int foak_value = 7000 + white_int[2];
+        return foak_value;
+    }
+    else if(count[2] == 3 && (count[0] == 2 || count[4] == 2)){
+        //full house
+        if(white_int[2] == 1)
+            white_int[2] = 14;
+
+        int full_value = 6000 + white_int[2];
+        return full_value;
+    }
+    else if(count[2] == 3 && (count[0] == 1 || count[4] == 1)){
+        //toak
+        if(white_int[2] == 1)
+            white_int[2] = 14;
+
+        int toak_value = 3000 + white_int[2];
+        return toak_value;
+    }
+
+    sort(count, count + 5);
+    if(count[4] == 2 && count[3] == 2){
+        //two_pairs
+        return 2000;
+    }
+    else if(count[4] == 2 && count[3] != 2){
+        //pair
+        return 1000;
+    }
+    else if(count[4] == 1){
+        //highcard
+        return 0;
+    }
+
+    return -1; //if fail to recognize the cards
+}
+
+void check_tie(string black_num, string white_num, int black_weight, int white_weight){
+    cout << "GO TO CHECK TIE" << endl;
 }
 
 int main(void){
@@ -124,8 +274,7 @@ int main(void){
         else if(white_weight > black_weight)
             cout << "White wins." << endl;
         else
-            cout << "Tie." << endl;
-        
+            check_tie(black_num, white_num, black_weight, white_weight);
     }
     return 0;
 }
