@@ -1,3 +1,7 @@
+/* @JUDGE_ID: BillSavart 10315 C++ "Poker Hands" */
+
+/* @BEGIN_OF_SOURCE_CODE */
+
 #include<iostream>
 #include<string>
 #include<algorithm>
@@ -320,7 +324,38 @@ void check_tie(string black_num, string white_num, int weight){
                 white_rest = white_int[i];
         }
 
+        int black_tpair[4] = {0,0,0,0};
+        int white_tpair[4] = {0,0,0,0}; 
+        int b = 0, w = 0;
+        for(int i = 0; i < 5; i++){
+            if(black_count[i] == 2){
+                black_tpair[b] = black_int[i];
+                b++;
+            }
+            if(white_count[i] == 2){
+                white_tpair[w] = white_int[i];
+                w++;
+            }
+        }
+        sort(black_tpair, black_tpair + 4);
+        sort(white_tpair, white_tpair + 4);
+
+        if(black_tpair[3] > white_tpair[3])
+            cout << "Black wins." << endl;
+        else if(white_tpair[3] > black_tpair[3])
+            cout << "White wins." << endl;
+        else if(black_tpair[1] > white_tpair[1])
+            cout << "Black wins." << endl;
+        else if(white_tpair[1] > black_tpair[1])
+            cout << "White wins." << endl;
+        else if(black_rest > white_rest)
+            cout << "Black wins." << endl;
+        else if(white_rest > black_rest)
+            cout << "White wins." << endl;
+        else
+            cout << "Tie." << endl;
         
+        return;
     }
     else if(weight == 1000){
         int black_pair = 0, white_pair = 0, b = 0, w = 0;
@@ -395,3 +430,4 @@ int main(void){
     }
     return 0;
 }
+/* @END_OF_SOURCE_CODE */
