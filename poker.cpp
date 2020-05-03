@@ -248,8 +248,79 @@ int check_white_num(string white_num, bool is_white_flush){
     return -1; //if fail to recognize the cards
 }
 
-void check_tie(string black_num, string white_num, int black_weight, int white_weight){
-    cout << "GO TO CHECK TIE" << endl;
+void check_tie(string black_num, string white_num, int weight){
+    int white_int[5], black_int[5];
+    for(int i = 0; i < 5; i++){
+        if(white_num[i] == 'T')
+            white_int[i] = 10;
+        else if(white_num[i] == 'J')
+            white_int[i] = 11;
+        else if(white_num[i] == 'Q')
+            white_int[i] = 12;
+        else if(white_num[i] == 'K')
+            white_int[i] = 13;
+        else if(white_num[i] == 'A')
+            white_int[i] = 14;
+        else 
+            white_int[i] = white_num[i] - '0';
+
+        if(black_num[i] == 'T')
+            black_int[i] = 10;
+        else if(black_num[i] == 'J')
+            black_int[i] = 11;
+        else if(black_num[i] == 'Q')
+            black_int[i] = 12;
+        else if(black_num[i] == 'K')
+            black_int[i] = 13;
+        else if(black_num[i] == 'A')
+            black_int[i] = 14;
+        else 
+            black_int[i] = black_num[i] - '0';
+    }
+    sort(black_int, black_int + 5);
+    sort(white_int, white_int + 5);
+
+    int black_count[5] = {0,0,0,0,0};
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            if(black_int[i] == black_int[j])
+                black_count[i]++;
+        }
+    }
+
+    int white_count[5] = {0,0,0,0,0};
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            if(white_int[i] == white_int[j])
+                white_count[i]++;
+        }
+    }
+
+    if(weight == 8000 || weight == 5000 || weight == 4000 || weight == 0){
+        //compare the highest cards, straight flush , flush, straight, highcards
+        for(int i = 4; i >= 0; i--){
+            if(black_int[i] > white_int[i]){
+                cout << "Black wins." << endl;
+                return;
+            }
+            else if(white_int[i] > black_int[i]){
+                cout << "White wins." << endl;
+                return;
+            }
+            else
+                ;
+        }
+        cout << "Tie." << endl;
+        return;
+    }
+    else if(weight == 2000){
+        
+    }
+    else if(weight == 1000){
+        
+    }
+    else
+        ;
 }
 
 int main(void){
@@ -274,7 +345,7 @@ int main(void){
         else if(white_weight > black_weight)
             cout << "White wins." << endl;
         else
-            check_tie(black_num, white_num, black_weight, white_weight);
+            check_tie(black_num, white_num, black_weight);
     }
     return 0;
 }
