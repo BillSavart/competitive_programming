@@ -1,3 +1,7 @@
+/* @JUDGE_ID: BillSavart 120 C++ "Stacks of Flapjacks" */
+
+/* @BEGIN_OF_SOURCE_CODE */
+
 #include<iostream>
 #include<algorithm>
 #include<string>
@@ -56,23 +60,24 @@ int main(void){
                     max_index++;
             }
            
-            if(max_index == j - 1)
+            if(max_index == count)
                 ;
             else if(max_index == 0){
-                //flip(1)
                 reverse(pancake, (pancake + (count + 1)));
-                cout << "1" << " ";
+                cout << j - count << " ";
             }
             else{
                 reverse(pancake, (pancake + (max_index + 1)));
+                cout << j - max_index << " ";
                 reverse(pancake, (pancake + (count + 1)));
-                cout << (max_index + j) << " ";
+                cout << j - count << " ";
             }
             count--;
-            
         }    
         cout << "0" << endl; 
 
     }   
     return 0;
 }
+
+/* @END_OF_SOURCE_CODE */
