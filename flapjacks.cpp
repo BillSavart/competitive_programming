@@ -6,12 +6,14 @@ using namespace std;
 int main(void){
     string input;
     int pancake[30];
+    
     while(getline(cin, input)){
 
         int j = 0;
         for(int i = 0 ; i < 30; i++)
             pancake[i] = 0;
 
+        //process the input
         for(int i = 0; i < input.length(); i++){
             if((input[i] >= 48 && input[i] <= 57) && (input[i+1] >= 48 && input[i+1] <= 57)){
                 pancake[j] = ((input[i] - '0') * 10) + (input[i+1] - '0');
@@ -26,6 +28,15 @@ int main(void){
             j++;
         }
 
+        int answer[j];
+        for(int i = 0; i < j; i++){
+            cout << pancake[i] << " ";
+            answer[i] = pancake[i];
+        }
+        sort(answer, answer + j);
+        
+        //flip
+        
     }
     return 0;
 }
